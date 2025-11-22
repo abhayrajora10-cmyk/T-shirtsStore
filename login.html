@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login - T-Shirt Shop</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="navbar"><div class="wrap container"><div class="brand">T-Shirt Shop</div><nav class="nav-links"><a href="index.html">Home</a><a href="category.html">Categories</a><a href="cart.html">Cart</a><a href="admin-login.html" style="margin-left:8px" class="btn btn-outline">Admin Login</a></nav></div></header>
+  <main class="container">
+    <div style="max-width:920px;margin:28px auto;display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start">
+      <div style="background:var(--card);padding:18px;border-radius:12px">
+        <div class="tshirt">
+          <div class="sleeve left"></div>
+          <div class="sleeve right"></div>
+          <div class="body"></div>
+        </div>
+        <h3 class="text-center">Welcome back</h3>
+        <p class="small text-center">Login to continue shopping.</p>
+      </div>
+      <div style="background:var(--card);padding:22px;border-radius:12px">
+        <h3>Login</h3>
+        <div class="form-row">
+          <label class="label">Email</label>
+          <input id="email" class="input" type="email" placeholder="you@example.com">
+        </div>
+        <div class="form-row">
+          <label class="label">Password</label>
+          <input id="password" class="input" type="password" placeholder="••••••">
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:10px">
+          <button id="loginBtn" class="btn">Login</button>
+          <a href="signup.html" class="small">Don't have an account? Register</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.getElementById('loginBtn').addEventListener('click', ()=>{
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const res = auth.login(email,password);
+      if(res.ok){ window.location.href = 'index.html';  }
+      // redirect to index
+      else{alert(res.msg); return;}
+      
+    });
+  </script>
+</body>
+</html>

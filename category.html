@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Categories - T-Shirt Shop</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="navbar"><div class="wrap container"><div class="brand">T-Shirt Shop</div><nav class="nav-links"><a href="index.html">Home</a><a href="category.html">Categories</a><a href="cart.html">Cart</a><a href="login.html">Login</a></nav></div></header>
+  <main class="container">
+    <h3>Categories</h3>
+    <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="btn cat-tab" data-cat="Male">Male</button>
+      <button class="btn cat-tab" data-cat="Female">Female</button>
+      <button class="btn cat-tab" data-cat="Uni">Uni</button>
+      <button class="btn cat-tab" data-cat="Child">Child</button>
+      <button class="btn cat-tab" data-cat="Teen">Teen</button>
+      <button class="btn cat-tab" data-cat="Old">Old</button>
+    </div>
+    <div id="cat-grid" class="grid"></div>
+  </main>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const initialCat = params.get('cat') || 'Male';
+    document.querySelectorAll('.cat-tab').forEach(b=>{
+      if(b.dataset.cat===initialCat) b.style.outline='2px solid var(--primary)';
+      // allow switching category tabs without login so users can browse images
+      b.addEventListener('click', ()=>{ loadCategory(b.dataset.cat); });
+    });
+
+    function loadCategory(cat){
+      const grid = document.getElementById('cat-grid'); grid.innerHTML='';
+      const data = window.appData.tshirtData.filter(i=>i.category===cat);
+      data.forEach(it=>{
+        const c=document.createElement('div'); c.className='card';
+        // Simple image tag — `it.img` is intentionally left empty in the seed data; paste a URL into the `img` property in `assets/js/data.js` or directly here.
+        c.innerHTML = `<img src="${it.img}" alt="${it.name}" loading="lazy"><div><h4>${it.name}</h4><p class="small">$${it.price} • <span class="discount">${it.discount}% off</span></p><div style="display:flex;gap:8px;margin-top:8px"><button class="btn view" data-id="${it.id}">View Product</button><button class="btn btn-outline add" data-id="${it.id}">Add to Cart</button></div></div>`;
+        c.querySelector('.view').addEventListener('click', ()=>{ if(!shopHelpers.requireLogin()) return; window.location.href=`product.html?id=${it.id}`; });
+        c.querySelector('.add').addEventListener('click', ()=>{
+          if(!shopHelpers.requireLogin()) return;
+          cartApi.addToCart(it,1);
+          alert('Added to cart');
+          location.reload();
+        });
+        grid.appendChild(c);
+      });
+    }
+    // initial: load category grid for browsing; actions still require login
+    loadCategory(initialCat);
+  </script>
+</body>
+</html>

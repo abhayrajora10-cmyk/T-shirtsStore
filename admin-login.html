@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Login - T-Shirt Shop</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <main class="container" style="padding-top:40px">
+    <div style="max-width:480px;margin:0 auto;background:var(--card);padding:20px;border-radius:12px">
+      <h3>Admin Login</h3>
+      <div class="form-row"><label class="label">Email</label><input id="aemail" class="input" type="email" value="admin@tshirtshop.com"></div>
+      <div class="form-row"><label class="label">Password</label><input id="apass" class="input" type="password" value="admin123"></div>
+      <div style="display:flex;gap:8px;margin-top:12px"><button id="alogin" class="btn">Login</button><a href="index.html" class="btn btn-outline">Back</a></div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('alogin').addEventListener('click', ()=>{
+      const email = document.getElementById('aemail').value.trim();
+      const pass = document.getElementById('apass').value;
+      if(email==='admin@tshirtshop.com' && pass==='admin123'){
+        localStorage.setItem('adminLogged','true');
+        window.location.href='admin-dashboard.html';
+      } else alert('Invalid admin credentials');
+    });
+  </script>
+</body>
+</html>

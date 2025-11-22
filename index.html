@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>T-Shirt Shop - Home</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="wrap container">
+      <div class="brand"><a href="#" style="color: inherit;    text-decoration: none;">T-Shirt Shop</a></div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="category.html">Categories</a>
+        <a href="cart.html">Cart <span id="cart-count" class="badge">0</span></a>
+        <a href="login.html" id="nav-login">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <h1>Comfortable tees for every style</h1>
+        <p>Explore our curated collection of t-shirts — classic, modern, and sustainable options for all ages.</p>
+        <a class="cta" href="category.html">Shop Now</a>
+
+        <div class="categories" style="margin-top:18px">
+          <div class="cat" data-cat="Male">Male</div>
+          <div class="cat" data-cat="Female">Female</div>
+          <div class="cat" data-cat="Uni">Uni</div>
+          <div class="cat" data-cat="Child">Child</div>
+          <div class="cat" data-cat="Teen">Teen</div>
+          <div class="cat" data-cat="Old">Old</div>
+        </div>
+      </div>
+        <div class="hero-card">
+          <img src="https://veirdo.in/cdn/shop/files/ai_creative_0000_Layer_6.jpg?v=1754546584" style="width:100%;border-radius:12px;" alt="hero">
+        </div>
+    </section>
+
+    <h3 style="margin-top:30px">Featured T-Shirts</h3>
+    <div id="featured" class="grid"></div>
+  </main>
+
+  <div id="global-modal" class="modal"><div class="dialog"><h3>Placeholder</h3></div></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    // render featured items
+    const container = document.getElementById('featured');
+    const items = (window.appData && window.appData.tshirtData) ? window.appData.tshirtData.slice(0,12) : [];
+    function renderCard(it){
+      const div = document.createElement('div'); div.className='card';
+      div.innerHTML = `<img src="${it.img}" alt="${it.name}"><div><h4>${it.name}</h4><div class="meta"><div><div class="price">$${it.price}</div><div class="discount">${it.discount}% off</div></div><div><button class="btn" data-id="${it.id}">View Product</button></div></div></div>`;
+      return div;
+    }
+    items.forEach(i=>{
+      const c = renderCard(i);
+      c.querySelector('button').addEventListener('click', ()=>{
+        if(!shopHelpers.requireLogin()) return;
+        // go to product page
+        window.location.href = `product.html?id=${i.id}`;
+      });
+      container.appendChild(c);
+    });
+
+    // category click behavior -> require login then redirect
+    document.querySelectorAll('.cat').forEach(el=> el.addEventListener('click', ()=>{
+      if(!shopHelpers.requireLogin()) return; window.location.href=`category.html?cat=${el.dataset.cat}`;
+    }));
+  </script>
+</body>
+</html>

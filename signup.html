@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Signup - T-Shirt Shop</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="navbar"><div class="wrap container"><div class="brand">T-Shirt Shop</div><nav class="nav-links"><a href="index.html">Home</a><a href="category.html">Categories</a><a href="cart.html">Cart</a></nav></div></header>
+  <main class="container">
+    <div style="max-width:780px;margin:40px auto;display:grid;grid-template-columns:1fr 1fr;gap:18px">
+      <div style="background:var(--card);padding:18px;border-radius:12px">
+        <h3>Create Account</h3>
+        <div class="form-row"><label class="label">Full name</label><input id="name" class="input"></div>
+        <div class="form-row"><label class="label">Email</label><input id="email" class="input" type="email"></div>
+        <div class="form-row"><label class="label">Password</label><input id="password" class="input" type="password"></div>
+        <div class="form-row"><label class="label">Confirm Password</label><input id="confirm" class="input" type="password"></div>
+        <div style="display:flex;gap:8px;margin-top:12px"><button id="signupBtn" class="btn">Sign up</button><a class="small" href="login.html">Already have an account?</a></div>
+      </div>
+     <div style="
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(20, 40, 80, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span style="display:inline-flex; width:38px; height:38px;border-radius:10px;  background:#e9f1ff;  color:#0d6efd; align-items:center;  justify-content:center;    font-weight:700;      font-size:18px;    ">✨</span>
+    <h4 style="margin:0;font-size:18px;">Why Join?</h4>
+  </div>
+
+  <ul style="    margin:0; padding-left:18px;    line-height:1.5;    color:#6c757d;font-size:14px;  ">
+    <li>Save your favorites</li>
+    <li>Faster checkout</li>
+    <li>Exclusive member-only offers</li>
+  </ul>
+</div>
+
+    </div>
+  </main>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.getElementById('signupBtn').addEventListener('click', ()=>{
+      const name=document.getElementById('name').value.trim();
+      const email=document.getElementById('email').value.trim();
+      const password=document.getElementById('password').value;
+      const confirm=document.getElementById('confirm').value;
+      if(!name||!email||!password){alert('Please complete all fields');return;}
+      if(password!==confirm){alert('Passwords do not match');return;}
+      const res = auth.signup({name,email,password});
+      if(!res.ok){alert(res.msg);return;}
+      // redirect
+      window.location.href='index.html';
+    });
+  </script>
+</body>
+</html>

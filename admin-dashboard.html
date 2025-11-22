@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Dashboard - T-Shirt Shop</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div style="display:flex;min-height:100vh">
+    <aside style="width:220px;padding:18px;background:#fff;border-right:1px solid #f0f3f8">
+      <h3>Admin</h3>
+      <nav style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+        <a class="small" href="#">Dashboard</a>
+        <a class="small" href="#users">Users</a>
+        <a class="small" href="#orders">Orders</a>
+        <a class="small" href="#retailers">Retailers</a>
+        <a class="small" href="#reports">Reports</a>
+      </nav>
+    </aside>
+    <main style="flex:1;padding:22px">
+      <h2>Dashboard Overview</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px">
+        <div class="kpi" id="k-users">Total Users: -</div>
+        <div class="kpi" id="k-orders">Total Orders: -</div>
+        <div class="kpi" id="k-rev">Revenue: -</div>
+        <div class="kpi" id="k-profit">Profit/Loss: -</div>
+      </div>
+
+      <section id="users" style="margin-top:18px">
+        <h4>Registered Users</h4>
+        <table class="table" id="users-table"><thead><tr><th>Name</th><th>Email</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="orders" style="margin-top:18px">
+        <h4>Orders</h4>
+        <table class="table" id="orders-table"><thead><tr><th>Order ID</th><th>User</th><th>Items</th><th>Total</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="retailers" style="margin-top:18px">
+        <h4>Retailers</h4>
+        <table class="table" id="retailers-table"><thead><tr><th>Name</th><th>Contact</th></tr></thead><tbody></tbody></table>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/js/data.js"></script>
+  <script>
+    // Always show dashboard data (demo mode) — no login required.
+    // Ensure localStorage is seeded (force seed if empty) so dashboard always has data to render
+    (function ensureSeed(){
+      try{
+        // Force-overwrite demo data so tables always show the updated sample data.
+        if(window.appData && window.appData.initialUsers){
+          localStorage.setItem('users', JSON.stringify(window.appData.initialUsers));
+        }
+        if(window.appData && window.appData.mockOrders){
+          localStorage.setItem('orders', JSON.stringify(window.appData.mockOrders));
+        }
+        if(window.appData && window.appData.retailers){
+          localStorage.setItem('retailers', JSON.stringify(window.appData.retailers));
+        }
+      }catch(e){ console.warn('ensureSeed failed', e); }
+    })();
+
+    // load data
+    const users = JSON.parse(localStorage.getItem('users')||'[]');
+    const orders = JSON.parse(localStorage.getItem('orders')||'[]');
+    const retailers = JSON.parse(localStorage.getItem('retailers')||'[]');
+    // KPIs
+    document.getElementById('k-users').textContent = 'Total Users: '+users.length;
+    document.getElementById('k-orders').textContent = 'Total Orders: '+orders.length;
+    const revenue = orders.reduce((s,o)=> s + parseFloat(o.total||0),0).toFixed(2);
+    document.getElementById('k-rev').textContent = 'Revenue: $'+revenue;
+    // fake profit = revenue * 0.25
+    const profit = (revenue*0.25).toFixed(2);
+    document.getElementById('k-profit').textContent = (profit>0? 'Profit: $'+profit : 'Loss: $'+Math.abs(profit));
+
+    // tables
+    const ut = document.querySelector('#users-table tbody'); users.forEach(u=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td>${u.name}</td><td>${u.email}</td>`; ut.appendChild(tr); });
+    const ot = document.querySelector('#orders-table tbody'); orders.forEach(o=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td>${o.id}</td><td>${o.userEmail}</td><td>${o.items.length}</td><td>$${o.total}</td>`; ot.appendChild(tr); });
+    const rt = document.querySelector('#retailers-table tbody'); retailers.forEach(r=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td>${r.name}</td><td>${r.contact}</td>`; rt.appendChild(tr); });
+  </script>
+</body>
+</html>
